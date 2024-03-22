@@ -1,0 +1,62 @@
+{% set curPage = 'students' %}
+{% set title = 'Registered Students' %}
+{% set user = request.args.get('user') %}
+{% set rejected = request.args.get('rejected') %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+    </ol>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Room</th>
+          <th>Full_name</th>
+          <th>Email</th>
+          <th>Mobile_no</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+        <tr class="{{'text-danger' if not student['is_active']}}">
+          <td>{{loop.index}}</td>
+          <td>{{student['rooms'][0]['room_name']}}</td>
+          <td>{{student['full_name']}}</td>
+          <td>{{student['email']}}</td>
+          <td>{{student['mobile_no']}}</td>
+          <td>
+            {% if student['is_active'] %}
+            <a href="/admin/update-student-status/{{student['_id']}}/1/"
+              class="badge bg-success w-100 text-decoration-none p-2">Active</a>
+            {% else %}
+            <a href="/admin/update-student-status/{{student['_id']}}/0/"
+              class="badge bg-danger w-100 text-decoration-none p-2">In-Active</a>
+            {% endif %}
+          </td>
+          <td>
+            <a href="/admin/delete-student/?sid={{student['_id']}}" class="btn btn-sm btn-danger" title="delete student"
+              onclick="return confirm('Are you sure to delete this student?')">
+              <i class="fas fa-trash-can"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

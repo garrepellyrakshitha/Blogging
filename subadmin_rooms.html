@@ -1,0 +1,43 @@
+{% set curPage = 'rooms' %}
+{% set title = 'Rooms' %}
+{% set user = request.args.get('user') %}
+{% set rejected = request.args.get('rejected') %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Rooms</li>
+    </ol>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr>
+          <th style="width: 10%;">S.No</th>
+          <th>Rooms</th>
+          <th style="width: 15%;">Total&nbsp;Students</th>
+          <th style="width: 15%;">Total&nbsp;Blogs</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{room['room_name']}}</td>
+          <td>{{room['student_count']}}</td>
+          <td>{{room['blog_count']}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

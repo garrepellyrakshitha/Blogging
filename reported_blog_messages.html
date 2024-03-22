@@ -1,0 +1,52 @@
+{% set curPage = 'reportedBlogs' %}
+{% set title = 'Reported Blog Messages' %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item">
+        <a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="javascript:window.history.back()" class=" text-decoration-none"> Reported Blogs</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+    </ol>
+  </nav>
+
+  <h4 class="mb-3">{{blog['blog_title']}}</h4>
+  <div>
+    {% set return_url = '/admin/reported-blogs'%}
+    <a href="/admin/delete-blog/?blog_id={{blog['_id']}}&return_url={{return_url}}"
+      class="btn btn-sm btn-danger">Delete</a>
+  </div>
+
+  <div class="table-responsive my-4">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Reported by</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for msg in messages %}
+        {% set student = getStudentById(msg['student_id'])%}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{student['full_name']}}</td>
+          <td>{{msg['message']}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,69 @@
+{% set curPage = 'subadminform' %}
+{% set title = 'Sub Admin' %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="javascript:window.history.go(-1)" class=" text-decoration-none">Sub
+          Admins</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{'Update' if sub_admin else 'Add'}} Sub-Admin</li>
+    </ol>
+  </nav>
+
+  <fieldset class="border p-4">
+    <legend class="float-none w-auto p-2 fs-5">{{'Update' if sub_admin else 'Add'}} Sub-Admin </legend>
+    <form action="/admin/save-sub-admin/" method="POST" id="sub_admin_form">
+
+      <div class="row mb-3 m-auto">
+        <label for="full_name" class="col-md-2 col-form-label required">Full Name</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="full_name" id="full_name" value="{{sub_admin['full_name']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="email" class="col-md-2 col-12 col-form-label required">Email</label>
+        <div class="col-md-8">
+          <input type="email" class="form-control" name="email" id="email" value="{{sub_admin['email']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="mobile_no" class="col-md-2 col-12 col-form-label required">Mobile No</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="mobile_no" id="mobile_no" value="{{sub_admin['mobile_no']}}"
+            required>
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="mobile_no" class="col-md-2 col-12 col-form-label required">Password</label>
+        <div class="col-md-8">
+          <input type="password" class="form-control" name="password" id="password" value="{{sub_admin['password']}}"
+            required>
+        </div>
+      </div>
+
+
+
+      <input type="hidden" name="sub_admin_id" id="sub_admin_id" value="{{sub_admin['_id']}}">
+      <button type="submit" class="btn btn-success">Save Sub Admin</button>
+    </form>
+  </fieldset>
+</div>
+
+{% endblock %}
+
+{% block scripts%}
+<script>
+  var editor = new FroalaEditor('#content');
+</script>
+{% endblock %}

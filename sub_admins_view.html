@@ -1,0 +1,60 @@
+{% set curPage = 'subadmins' %}
+{% set title = 'Sub Admins' %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Sub-Admins</li>
+    </ol>
+  </nav>
+
+  <div id="add_sub_admin_btn">
+    <a href="/admin/add-sub-admin/" class="btn btn-sm btn-theme-secondary">+ ADD SUB-ADMIN</a>
+  </div>
+  <div class="table-responsive my-4">
+    <table class="table table-bordered bg-" id="table">
+      <thead>
+        <tr class="secondary-bg text-light">
+          <th>#</th>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Mobile No</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in sub_admins %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{item['full_name']}}</td>
+          <td>{{item['email']}}</td>
+          <td>{{item['mobile_no']}}</td>
+          <td>{% if item['is_active'] %}
+            <a href="/admin/update-sub-admin-status/{{item['_id']}}/1/"
+              class="badge bg-success w-100 text-decoration-none p-2">Active</a>
+            {% else %}
+            <a href="/admin/update-sub-admin-status/{{item['_id']}}/0/"
+              class="badge bg-danger w-100 text-decoration-none p-2">In-Active</a>
+            {% endif %}
+          </td>
+          <td>
+            <a href="/admin/edit-sub-admin/?said={{item['_id']}}" class="btn btn-sm btn-primary">Edit</a>
+            <a href="/admin/delete-sub-admin/?said={{item['_id']}}"
+              onclick="return confirm('Are you sure to delete this sub admin?')"
+              class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

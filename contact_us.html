@@ -1,0 +1,37 @@
+{% set curPage = 'contactus' %}
+{% set title = 'Contact Us' %}
+
+{% extends "/student/base/base_blog.html" %}
+
+{% block main_content %}
+
+<div class="main-content w-70">
+  <h4 class="page-title bg-white w-100">{{title}}</h4>
+  <hr>
+  <div class="bg-white p-4">
+    <div>
+      <a href="javascript:window.history.back()" class="btn btn-sm btn-warning mb-3"><- Back</a>
+    </div>
+
+    <div class="contact us">
+      <h5 class="mb-3">Reach us at</h5>
+      <div class="text-secondary">
+        <div class="mb-3">
+          <span><i class="fa-solid fa-envelope me-2 fa-fw"></i></span>
+          <span>info@letsblog.com</span>
+        </div>
+        <div class="mb-3">
+          <span><i class="fa-solid fa-mobile-android me-2 fa-fw"></i></span>
+          <span>906-789-8354</span>
+        </div>
+        <div class="mb-3">
+          <span><i class="fa-solid fa-address-card me-2 fa-fw"></i></span>
+          <span>2255 Pinewood Avenue, Escanaba, Michigan(MI), 49829</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

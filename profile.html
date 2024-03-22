@@ -1,0 +1,52 @@
+{% set curPage = 'myprofile' %}
+{% set title = 'My Profile' %}
+
+{% extends "/student/base/base.html" %}
+
+{% block content %}
+
+<div class="content container-md">
+  <h3 class="page-title bg-white">{{title}}</h3>
+
+  <div class="bg-white p-4">
+    <form action="{{request.uri}}" method="post" id="profile_form">
+
+      <div class="row mb-3 m-auto">
+        <label for="full_name" class="col-md-2 col-12 col-form-label text-end required">Full Name</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="full_name" id="full_name" value="{{user['full_name']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="email" class="col-md-2 col-12 col-form-label text-end required">Email</label>
+        <div class="col-md-8">
+          <input type="email" class="form-control" name="email" id="email" value="{{user['email']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="mobile_no" class="col-md-2 col-12 col-form-label text-end required">Mobile No</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="mobile_no" id="mobile_no" value="{{user['mobile_no']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <div class="offset-md-2 col-md-4">
+          <input type="hidden" name="student_id" value="{{user['_id']}}">
+          <input type="submit" value="Update" class="btn btn-success w-100">
+        </div>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+{% endblock %}

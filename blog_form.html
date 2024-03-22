@@ -1,0 +1,84 @@
+{% set curPage = 'saveblog' %}
+{% set title = 'Save Blog' %}
+
+{% extends "/student/base/base.html" %}
+
+{% block content %}
+
+<div class="content container-fluid">
+  <h3 class="page-title bg-white">{{'Update' if blog else 'Add'}} Blog</h3>
+
+
+  <div class="bg-white p-5">
+    <form action="/save-blog/" method="POST" enctype="multipart/form-data" id="blog_form">
+
+      <div class="row mb-3 m-auto">
+        <label for="category_id" class="col-md-2 col-form-label">Room</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" readonly="readonly" value="{{room['room_name']}}">
+          <input type="hidden" class="form-control" name="room_id" id="room_id" value="{{room['_id']}}"
+            readonly="readonly">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="blog_title" class="col-md-2 col-12 col-form-label required">Title</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="blog_title" id="blog_title" value="{{blog['blog_title']}}"
+            required="required">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="tags" class="col-md-2 col-12 col-form-label">Tags</label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" name="tags" id="tags" value="{{blog['tags']}}"
+            placeholder="eg: novel, article, history">
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="content" class="col-md-2 col-form-label required">Content</label>
+        <div class="col-md-8">
+          <textarea name="content" class="form-control" id="content" required>{{blog['content']}}</textarea>
+        </div>
+      </div>
+
+      <div class="row mb-3 m-auto">
+        <label for="blog_image" class="col-md-2 col-form-label required">Image</label>
+        <div class="col-md-8">
+          <input type="file" class="form-control file" name="blog_image" id="blog_image" onchange="loadFile(event)"
+            {{'required' if not blog}}>
+          <input type="hidden" name="image_file_name" value="{{blog['image_file_name']}}">
+          <div class="my-2">
+            {% if blog %}
+            <img src="{{ url_for('static', filename='images/uploads/blogs/'+blog['image_file_name']) }}"
+              alt="blog image" style="width: 100%;" id="preview">
+            {% else %}
+            <img src="../../static/images/uploads/no-image.jpg" alt="no-image" style="width: 100%;" id="preview">
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+      <button type="submit" class="btn btn-success">Save Blog</button>
+    </form>
+  </div>
+</div>
+
+
+{% endblock %}
+{% block scripts%}
+<script>
+  var editor = new FroalaEditor('#content');
+
+  var loadFile = function (event) {
+    var preview = document.getElementById('preview');
+    preview.src = URL.createObjectURL(event.target.files[0]);
+    preview.onload = function () {
+      URL.revokeObjectURL(preview.src) // free memory
+    }
+  };
+</script>
+{% endblock %}

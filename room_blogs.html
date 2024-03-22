@@ -1,0 +1,54 @@
+{% set curPage = 'roomblogs' %}
+{% set title = room['room_name'] %}
+
+{% extends "/student/base/base_blog.html" %}
+
+{% block main_content%}
+<div class="main-content w-70">
+  <h4 class="page-title bg-white w-100">{{room['room_name']}}</h4>
+  <hr>
+
+  <div class="row">
+    {% if not room_blogs %}
+    <div class="col-12 bg-white p-3">
+      <h5 class="text-center text-danger">Sorry! no blogs found</h5>
+    </div>
+    {% endif %}
+    {% for blog in room_blogs %}
+    <div class="col-sm-6 mb-3">
+      <a href="/view-blog/?bid={{blog['_id']}}" class="text-decoration-none">
+        <div class="blog bg-white p-3">
+          <div class="mb-3">
+            <img src="{{ url_for('static', filename='images/uploads/blogs/'+blog['image_file_name']) }}"
+              alt="blog image" style="width: 100%; height:180px; object-fit: contain;">
+          </div>
+          <div class="room mb-1">
+            <span class="fw-bold">{{blog['rooms'][0]['room_name']}}</span>
+          </div>
+
+          <div class="d-flex flex-column justify-content-evenly gap-1" style="height: 100px;">
+
+            <h6 class="text-secondary">
+              {{blog['blog_title']}}
+            </h6>
+            <div class="d-flex justify-content-between gap-2 text-secondary">
+              <div class="">
+                <i class="fa-solid fa-user fa-fw me-1"></i>
+                {{blog['student'][0]['full_name']}}
+              </div>
+              <div>
+                <i class="fa-solid fa-clock fa-fw me-1"></i>
+                {{blog['inserted_date'].strftime("%d %B, %Y")}}
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endblock %}

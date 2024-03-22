@@ -1,0 +1,81 @@
+{% set curPage = 'rooms' %}
+{% set title = 'rooms' %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<fieldset class="border bg-light mb-5 pb-4">
+  <legend class="float-none w-auto p-2 fs-6">{{'Update' if room else 'Add'}} Rooms</legend>
+  <form action="/admin/rooms/" method="POST" id="room_form">
+    <div class="row g-3 align-items-center justify-content-center">
+      <div class="col-auto">
+        <label for="room_name" class="col-form-label">Room Name</label>
+      </div>
+      <div class="col-auto">
+        <input type="text" name="room_name" id="room_name" class="form-control" value="{{room['room_name']}}" required
+          placeholder="Room name">
+      </div>
+      <div class="col-auto">
+        <label for="sub_admin_id" class="col-form-label">Sub Admin</label>
+      </div>
+      <div class="col-auto">
+        <input type="hidden" name="room_id" id="room_id" value="{{room['_id']}}">
+        <select name="sub_admin_id" id="sub_admin_id" class="form-select" required>
+          <option value="">--Select Sub Admin--</option>
+          {% for sub in sub_admins%}
+          <option value="{{sub['_id']}}" {{'selected' if sub['_id']==room['sub_admin_id']}}>
+            {{sub['full_name']}}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-auto">
+        <button class="btn btn-sm btn-success">Save</button>
+      </div>
+      {% if room %}
+      <div class="col-auto">
+        <a href="/admin/rooms" class="btn btn-sm btn-warning">Cancel</a>
+      </div>
+      {% endif %}
+    </div>
+  </form>
+</fieldset>
+
+<fieldset class="border bg-light mb-2 shadow p-3">
+  <legend class="float-none w-auto p-2 fs-6">Rooms List</legend>
+  <div class="table-responsive">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr class="primary-bg text-light">
+          <td>S.No</td>
+          <td>Sub Admin</td>
+          <td>Room Name</td>
+          <td>Action</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{room['sub_admin']['full_name']}}</td>
+          <td>{{room['room_name']}}</td>
+          <td>
+            <a href="/admin/edit-room?id={{room['_id']}}" class="btn btn-sm btn-info" title="Edit rooms">
+              <i class="fas fa-edit fa-fw"></i>
+            </a>
+            <a href="/admin/delete-room?id={{room['_id']}}"
+              onclick="return confirm('Are you sure to delete this room?')" class="btn btn-sm btn-danger"
+              title="Delete room">
+              <i class="fas fa-close fa-fw"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</fieldset>
+
+
+{% endblock %}

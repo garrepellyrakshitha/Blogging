@@ -1,0 +1,32 @@
+{% set curPage = 'login' %}
+{% set title = 'Login' %}
+
+{% extends "/student/base/base.html" %}
+
+{% block content %}
+
+<div class="content container d-flex">
+  <fieldset class="user-login bg-white shadow">
+    <legend class="float-none w-auto px-2">Login to explore</legend>
+
+    <form action="{{request.url}}" method="POST" id="user-registration">
+      <h6 class="text-center text-danger">{{msg}}</h6>
+      <div class="mb-4">
+        <label for="email" class="form-label required">Email</label>
+        <input type="email" name="email" id="email" class="form-control" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="form-label required">Password</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+      </div>
+
+      <button type="submit" class="btn btn-theme-secondary w-100 mb-4">Login</button>
+
+    </form>
+    <p>Don't have an account? <a href="/register">Let's' Blog together</a></p>
+  </fieldset>
+</div>
+
+
+{% endblock %}

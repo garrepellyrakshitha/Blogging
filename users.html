@@ -1,0 +1,54 @@
+{% set curPage = 'users' %}
+{% set title = 'Registered Customers' %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Customers</li>
+    </ol>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-bordered bg-" id="table">
+      <thead>
+        <tr class="primary-bg text-light">
+          <th>#</th>
+          <th>Name</th>
+          <th>City</th>
+          <th>Contact No</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in customers %}
+        {% set city = getCity(item['cityId']) %}
+        <tr class="{{'text-danger' if not item['status']}}">
+          <td>{{loop.index}}</td>
+          <td>{{item['firstName']}} {{item['lastName']}}</td>
+          <td>{{city['name']}}</td>
+          <td>{{item['contactNumber']}}</td>
+          <td>
+            {{'Active' if item['status'] else 'In-Active'}}
+          </td>
+          <td>
+            {% if item['status']%}
+            <a href="/admin/user/update-active-status/{{item['userId']}}/" class="btn btn-sm btn-danger">In Active</a>
+            {% else %}
+            <a href="/admin/user/update-active-status/{{item['userId']}}/" class="btn btn-sm btn-success">Active</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

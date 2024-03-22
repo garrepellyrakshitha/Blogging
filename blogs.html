@@ -1,0 +1,67 @@
+{% set curPage = 'myblogs' %}
+{% set title = 'My Blogs' %}
+
+{% extends "/student/base/base.html" %}
+
+{% block content %}
+
+<div class="content container-fluid">
+  <h3 class="page-title bg-white">{{title}}</h3>
+  <div class="d-flex justify-content-end">
+    <a href="/add-blog/" class="btn btn-sm btn-theme-primary mb-3">+ ADD BLOG</a>
+  </div>
+
+  <div class="table-responsive bg-white p-3">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th style="width: 60%;">Title</th>
+          <th>Status</th>
+          <th>Remarks</th>
+          <th>Visited</th>
+          <th style="width: 15%;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for blog in blogs %}
+        <tr class="{{'text-danger' if blog['status'] == BlogStatus.REJECTED.value}}">
+          <td>{{loop.index}}</td>
+          <td>{{blog['blog_title']}}</td>
+          <td>
+            {{BlogStatus(blog['status']).name}}
+          </td>
+          <td>
+            {% if blog['status'] == 2 %}
+            <span>{{(blog['rejection_remarks']|last)['remarks']}}</span>
+            {% endif %}
+          </td>
+          <td>{{blog['visit_count']}}</td>
+          <td>
+            {% if blog['status'] == 2 %}
+            <a href="/resend-blog-approval/?bid={{blog['_id']}}" class="btn btn-success btn-sm"
+              title="resend blog for approval">
+              <i class="fas fa-check-circle"></i>
+            </a>
+            {% endif %}
+
+            <a href="/view-blog/?bid={{blog['_id']}}" class="btn btn-info btn-sm" title="view blog">
+              <i class="fas fa-eye"></i>
+            </a>
+            <a href="/edit-blog/?bid={{blog['_id']}}" class="btn btn-primary btn-sm" title="edit blog"><i
+                class="fas fa-pen"></i></a>
+            <a href="/delete-blog/?blog_id={{blog['_id']}}" class="btn btn-danger btn-sm"
+              onclick="return confirm('Are you sure to delete this blog?')" title="delete blog">
+              <i class="fas fa-trash-alt"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+
+{% endblock %}

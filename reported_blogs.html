@@ -1,0 +1,51 @@
+{% set curPage = 'reportedBlogs' %}
+{% set title = 'Reported Blogs' %}
+{% set url = request.url %}
+
+{% extends "/admin/base/base.html" %}
+
+{% block content %}
+
+<div class="border bg-light p-2 my-2">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb mt-2">
+      <li class="breadcrumb-item"><a href="/admin/dashboard" class=" text-decoration-none">Dashboard</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Blogs</li>
+    </ol>
+  </nav>
+
+  <div class="table-responsive my-4">
+    <table class="table table-bordered" id="table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Author</th>
+          <th>Blog</th>
+          <th>Reported Count</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in blogs %}
+        {% set blog = getBlogById(report['_id'])%}
+        {% set author = getStudentById(blog['author'])%}
+        <tr>
+          <td>{{loop.index}}</td>
+          <td>{{author['full_name']}}</td>
+          <td>{{blog['blog_title']}}</td>
+          <td>{{report['report_count']}}</td>
+          <td>
+            <a href="/admin/view-reported-blogs-details/?blog_id={{report['_id']}}"
+              class="btn btn-sm btn-primary">View</a>
+            <a href="/admin/delete-blog/?blog_id={{report['_id']}}&return_url={{url}}" class="btn btn-sm btn-danger"
+              onclick="return confirm('Are you sure to delete this blog?')">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+{% endblock %}

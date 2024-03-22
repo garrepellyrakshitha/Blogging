@@ -1,0 +1,57 @@
+{% set curPage = 'register' %}
+{% set title = 'Register' %}
+
+{% extends "/student/base/base.html" %}
+
+{% block content %}
+
+<div class="content container-md d-flex">
+  <fieldset class="user-register bg-white shadow my-5">
+    <legend class="float-none w-auto px-2">Register Now</legend>
+    <p class="mb-4">Already have an account? <a href="/login">Login</a></p>
+    <form action="{{request.url}}" method="POST" id="student_registration" autocomplete="off">
+
+      <div class="mb-4">
+        <label for="room_id" class="form-label required">Room</label>
+        <select name="room_id" id="room_id" class="form-select" required>
+          <option value="">--Select--</option>
+          {% for room in rooms %}
+          <option value="{{room['_id']}}">{{room['room_name']}}</option>
+          {%endfor%}
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="full_name" class="form-label required">Full Name</label>
+        <input type="text" name="full_name" id="full_name" class="form-control" placeholder="Full Name" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="form-label required">Email</label>
+        <input type="email" name="email" id="email" class="form-control" placeholder="Email" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="mobile_no" class="form-label required">Mobile No</label>
+        <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Mobile No" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="form-label required">Password</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+      </div>
+
+      <div class="mb-5">
+        <label for="email" class="form-label">Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="form-control"
+          placeholder="Confirm Password" required>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100 mb-3">Register Now</button>
+
+    </form>
+  </fieldset>
+</div>
+
+
+{% endblock %}

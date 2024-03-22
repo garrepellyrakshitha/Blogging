@@ -1,0 +1,260 @@
+{% set curPage = 'blogview' %}
+{% set title = 'View blog' %}
+
+{% extends "/student/base/base_blog.html" %}
+
+{% block main_content %}
+
+<div class="main-content w-70">
+  <h4 class="page-title bg-white w-100">{{title}}</h4>
+  <hr>
+  <div class="bg-white p-4">
+    <div>
+      <a href="/" class="btn btn-sm btn-warning mb-3"><- Back</a>
+    </div>
+
+    <div class="blog_details">
+
+      <h1 class="mb-3">{{blog['blog_title']}}</h1>
+      <div class="d-flex gap-3 mb-3">
+        <span>
+          <i class="fa-solid fa-user me-1"></i>
+          {{blog['user'][0]['full_name']}}
+        </span>
+        <span>
+          <i class="fa-solid fa-clock me-1"></i>
+          {{blog['inserted_date'].strftime("%d %B, %Y - %H:%M %p")}}
+        </span>
+      </div>
+
+      <div class="tags mb-3">
+        {% set tags = blog['tags'].split(', ')%}
+        {%for tag in tags%}
+        <a href="/search?q={{tag}}" class="btn btn-sm btn-info me-2 rounded-pill">{{tag}}</a>
+        {% endfor %}
+      </div>
+
+      <div class="mb-3">
+        <img src="{{ url_for('static', filename='images/uploads/blogs/'+blog['image_file_name']) }}" alt="blog image"
+          style="width: 100%;">
+      </div>
+
+      <div class="d-flex justify-content-between">
+        <div class="d-flex gap-2 mb-3">
+          <button type="button" class="btn btn-sm btn-primary" {{'disabled' if 'logged_in' not in session}}
+            onclick="likeBlog(`{{blog['_id']}}`)">
+            <span class="d-flex gap-2 align-items-center">
+              <span><i class="fa-solid fa-thumbs-up"></i> {{'Liked' if is_liked else 'Like'}}</span>
+              <span class="badge rounded-pill bg-light text-primary">{{blog['likes']|length}}</span>
+            </span>
+          </button>
+          <button type="button" class="btn btn-sm btn-danger" {{'disabled' if 'logged_in' not in session}}
+            onclick="disLikeBlog(`{{blog['_id']}}`)">
+            <span class="d-flex gap-2 align-items-center">
+              <span><i class="fa-solid fa-thumbs-down"></i> {{'Disliked' if is_disliked else 'Dislike'}}</span>
+              <span class="badge rounded-pill bg-light text-danger">{{blog['dislikes']|length}}</span>
+            </span>
+          </button>
+
+          {% if 'logged_in' in session %}
+          {% if template_datas['str'](blog['author']) != session['user']['_id']['$oid'] %}
+          <!-- Report Btn -->
+          <a class="btn btn-sm btn-warning" data-bs-toggle="collapse" href="#reportBlog" role="button"
+            aria-expanded="false" aria-controls="reportBlog">
+            <span><i class="fa-solid fa-exclamation"></i> Report</span>
+          </a>
+          {% endif %}
+          {% endif %}
+        </div>
+
+        <div class="d-flex gap-2">
+          <img width="32" height="32" src="https://img.icons8.com/color/48/facebook-new.png" alt="facebook-new" />
+          <img width="32" height="32" src="https://img.icons8.com/color/32/twitter--v1.png" alt="twitter--v1" />
+          <img width="32" height="32" src="https://img.icons8.com/color/48/instagram-new--v1.png"
+            alt="instagram-new--v1" />
+          <img width="32" height="32" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="whatsapp--v1" />
+        </div>
+      </div>
+
+      <!-- collapse form to report -->
+      <div class="collapse" id="reportBlog">
+        <div class="card card-body">
+          <form action="/report-blog/" method="post">
+            <div class="mb-2">
+              <label for="message" class="form-label">Your message</label>
+              <textarea name="message" id="message" class="form-control" required></textarea>
+            </div>
+            <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+            <input type="submit" value="REPORT NOW" class="btn btn-sm btn-warning">
+          </form>
+        </div>
+      </div>
+
+      <div class="content my-3 fs-6" style="line-height: 2;">
+        {{blog['content']|safe}}
+      </div>
+
+      <hr>
+
+      <div class="comments">
+        <h3>Comments</h3>
+        {% if not 'logged_in' in session %}
+        <h6><q>Please login to post your comments</q></h6>
+        {% endif %}
+        <div class="border p-2">
+
+          {% if 'logged_in' in session %}
+          <form action="/add-comments/" method="post">
+            <div class="mb-2">
+              <label for="comment" class="form-label">Post your comment</label>
+              <textarea name="comment" id="comment" class="form-control"></textarea>
+            </div>
+            <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+            <input type="submit" value="POST" class="btn btn-sm btn-success">
+          </form>
+          {% endif %}
+
+          <div class="comments mt-3">
+
+            {% if not blog['comments'] %}
+            <h5 class="text-danger">Sorry!, No comments yet</h5>
+            {% endif %}
+
+            {% for comment in blog['comments']|sort(attribute='_id', reverse=True) %}
+            {% set student = getStudentById(comment['student_id'])%}
+            <div class="border ms-5 p-2 mb-2">
+              <div class="d-flex justify-content-between text-secondary mb-2">
+                <span>{{student['full_name']}}</span>
+                <span> {{comment['comment_date'].strftime("%d %B, %Y - %H:%M %p")}} </span>
+              </div>
+              <q class="mb-2">
+                {{comment['comment']}}
+              </q>
+
+              <div class="post_reply mt-1">
+                {% if 'logged_in' in session %}
+                <a class="btn btn-primary btn-sm text-decoration-none ms-1 p-1" data-bs-toggle="collapse"
+                  href="#postReply_{{loop.index}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  Reply
+                </a>
+
+
+                {% if template_datas['str'](student['_id']) != session['user']['_id']['$oid'] %}
+                <a class="btn btn-warning btn-sm text-decoration-none ms-1 p-1" data-bs-toggle="collapse"
+                  href="#report_{{loop.index}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  Report
+                </a>
+                {% endif %}
+                {% endif %}
+
+                <!-- add reply to comment form collapsable -->
+                <div class="collapse mt-2" id="postReply_{{loop.index}}">
+                  <div class="card card-body">
+                    <form action="/add-comment-reply/" method="post">
+                      <div class="mb-2">
+                        <label for="reply" class="form-label">Post your reply</label>
+                        <textarea name="reply" id="reply" class="form-control"></textarea>
+                      </div>
+                      <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+                      <input type="hidden" name="comment_id" value="{{comment['_id']}}">
+                      <input type="submit" value="REPLY" class="btn btn-sm btn-success p-1">
+                    </form>
+                  </div>
+                </div>
+
+                <!-- report comment form collapsable -->
+                <div class="collapse mt-2" id="report_{{loop.index}}">
+                  <div class="card card-body">
+                    <form action="/report-comment/" method="post">
+                      <div class="mb-2">
+                        <label for="reply" class="form-label">Message</label>
+                        <textarea name="message" id="message" class="form-control"></textarea>
+                      </div>
+                      <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+                      <input type="hidden" name="comment_id" value="{{comment['_id']}}">
+                      <input type="hidden" name="comment" value="{{comment['comment']}}">
+                      <input type="submit" value="Report" class="btn btn-sm btn-success p-1">
+                    </form>
+                  </div>
+                </div>
+
+                <div class="replies mt-2">
+                  {% for reply in comment['replies']|sort(attribute='_id', reverse=True) %}
+                  {% set student = getStudentById(reply['student_id'])%}
+                  <div class="border-start ms-5 p-3 my-2">
+                    <div class="d-flex justify-content-between text-secondary mb-2">
+                      <span>{{student['full_name']}}</span>
+                      <span> {{reply['reply_date'].strftime("%d %B, %Y - %H:%M %p")}} </span>
+                    </div>
+
+                    <div class="mb-2">
+                      <q>
+                        {{reply['reply']}}
+                      </q>
+                    </div>
+
+                    <!-- report replies -->
+                    {% if template_datas['str'](student['_id']) != session['user']['_id']['$oid'] %}
+                    <a class="btn btn-warning btn-sm text-decoration-none ms-1 p-1" data-bs-toggle="collapse"
+                      href="#reply_report_{{loop.index}}" role="button" aria-expanded="false"
+                      aria-controls="collapseExample">
+                      Report
+                    </a>
+                    {% endif %}
+                    <!-- report comment replies form collapsable -->
+                    <div class="collapse mt-2" id="reply_report_{{loop.index}}">
+                      <div class="card card-body">
+                        <form action="/report-comment/" method="post">
+                          <div class="mb-2">
+                            <label for="reply" class="form-label">Message</label>
+                            <textarea name="message" id="message" class="form-control"></textarea>
+                          </div>
+                          <input type="hidden" name="blog_id" value="{{blog['_id']}}">
+                          <input type="hidden" name="comment_id" value="{{comment['_id']}}">
+                          <input type="hidden" name="reply_id" value="{{reply['_id']}}">
+                          <input type="hidden" name="comment" value="{{reply['reply']}}">
+                          <input type="submit" value="Report" class="btn btn-sm btn-success">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  {% endfor %}
+                </div>
+
+              </div>
+
+            </div>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function likeBlog(blog_id) {
+    $.post("/like-blog/", { blog_id: blog_id }, function (result) {
+      if (result) {
+        window.location.reload()
+      }
+    })
+  }
+
+  function disLikeBlog(blog_id) {
+    $.post("/dislike-blog/", { blog_id: blog_id }, function (result) {
+      if (result) {
+        window.location.reload()
+      }
+    })
+  }
+</script>
+
+{% endblock %}

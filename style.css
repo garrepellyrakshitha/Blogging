@@ -1,0 +1,258 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+:root {
+  --primary-color-dark: #1c0344;
+  --primary-color-light: #fdfbf4;
+  --secondary-color-dark: #4d0b80;
+  --secondary-color-light: #dcdfdf;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", serif;
+  font-size: 14px;
+  background-color: #f0f0f0;
+  height: 100vh;
+}
+
+legend {
+  font-size: 22px;
+  color: var(--secondary-color-dark);
+  font-weight: 500;
+  font-style: oblique;
+  font-family: "Merriweather", serif;
+  /* font-family: "Inter", serif; */
+}
+
+input {
+  border-radius: 0 !important;
+}
+
+input[type="radio"] {
+  border-radius: 50% !important;
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  color: #a0a0a0 !important;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #a0a0a0 !important;
+}
+
+::placeholder {
+  color: #a0a0a0 !important;
+}
+
+table td {
+  vertical-align: middle;
+}
+
+fieldset {
+  padding: 2%;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+.w-60 {
+  width: 60%;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-30 {
+  width: 30%;
+}
+
+.btn {
+  border-radius: 0;
+}
+
+.fs-6 {
+  font-size: .9rem !important;
+}
+
+.content {
+  min-height: calc(100vh - 112px) !important;
+}
+
+.form-label {
+  color: #797979;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+
+.required::after {
+  content: " *";
+  color: red;
+}
+
+.error {
+  color: red;
+  font-weight: 400;
+  display: block;
+  padding: 6px 2px;
+  font-size: 14px;
+}
+
+.form-control.error {
+  border-color: red;
+  padding: 0.375rem 0.75rem;
+}
+
+.alert {
+  text-align: center;
+  position: fixed;
+  top: 10%;
+  right: 5%;
+  z-index: 9999;
+}
+
+.alert-success {
+  background-color: #a9e8cc !important;
+}
+
+.form-switch .form-check-input {
+  border-radius: 20px !important;
+}
+
+.form-switch .form-check-input:checked {
+  background-color: #048e1d;
+  border-color: #048e1d;
+}
+
+.top-bar .fa-solid {
+  color: var(--secondary-color-dark);
+}
+
+
+.btn-theme-primary {
+  background-color: var(--primary-color-dark);
+  color: var(--primary-color-light);
+}
+
+.btn-theme-primary:hover {
+  background-color: var(--secondary-color-dark);
+  color: var(--secondary-color-light);
+}
+
+.btn-theme-secondary {
+  background-color: var(--secondary-color-dark);
+  color: var(--secondary-color-light);
+}
+
+.btn-theme-secondary:hover {
+  background-color: var(--primary-color-dark);
+  color: var(--primary-color-light);
+}
+
+.navbar {
+  background-color: var(--primary-color-dark);
+  padding: 15px 0;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 8px;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #fff !important;
+}
+
+.navbar-nav .nav-item .nav-link.active,
+.navbar-nav .nav-item .nav-link:hover {
+  border-radius: 20px;
+  background-color: #ffffff;
+  color: var(--primary-color-dark) !important;
+}
+
+.page-title {
+  font-family: "Inter", serif;
+  font-weight: 500;
+  background-color: #f0efef;
+  padding: 8px;
+  font-size: 20px;
+  margin: 28px 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4b4b4b;
+  box-shadow: 0 0 6px 1px rgba(190, 189, 189, 0.646);
+  text-align: center;
+}
+
+.top-bar {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+}
+
+
+
+/* Home Page */
+
+
+.home-restaurant {
+  color: #5e5d5d;
+  margin-top: 2%;
+  background-color: #f4fef6;
+  box-shadow: 0 1px 8px 2px rgba(195, 195, 195, 0.53);
+}
+
+.home-restaurant img {
+  width: 150px;
+  height: 120px;
+}
+
+.user-register,
+.user-login,
+.restaurant-register {
+  width: 40vw;
+  margin: auto;
+}
+
+/* Rating */
+
+.star-rating {
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 1.8em;
+  justify-content: space-around;
+  padding: 0 0.2em;
+  text-align: center;
+  width: 5em;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star-rating :checked~label {
+  color: #f90;
+}
+
+.star-rating label:hover,
+.star-rating label:hover~label {
+  color: #fc0;
+}
